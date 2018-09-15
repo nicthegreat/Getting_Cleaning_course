@@ -1,5 +1,3 @@
-setwd('C:/Users/nicholas.eng/Desktop/testprojects/UCI HAR Dataset')
-
 ## Merging the training and the test sets to create one data set
 
 # read activity and feature labels
