@@ -29,4 +29,19 @@ subset_data <- full_data[ ,subsetColumns]
 
 ## Use descriptive activities names for activity measurements
 names(activity_labels) <- c("activityNumber", "activityName")
-full_data$activity <- activity_labels$activityName[full_data$activity]
+subset_data$activity <- activity_labels$activityName[subset_data$activity]
+
+## Appropriately labels the data set with descriptive variable names.
+descriptive <- names(subset_data)
+descriptive <- gsub("[[:punct:]]", "", descriptive)
+descriptive <- gsub("^t", "time_", descriptive)
+descriptive <- gsub("^f", "frequency_", descriptive)
+descriptive <- gsub("^angle", "angle_", descriptive)
+descriptive <- gsub("^angle_t", "angleTime_", descriptive)
+descriptive <- gsub("[Mm]ean", "_Mean", descriptive)
+descriptive <- gsub("[Ss]td", "_Std", descriptive)
+names(subset_data) <- descriptive
+
+## Create tidy data set with average of each variable, by activity, by subject
+tidy_dataset <- aggregate(subset_data[, 2:87], list(subject = subset_data$subject,activity = subset_data$activity), mean)
+write.table(tidy_dataset, file = "tidyDataset.txt", row.names = FALSE)
